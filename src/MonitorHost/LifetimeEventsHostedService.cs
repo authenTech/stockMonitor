@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿using HtmlAgilityPack;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +14,17 @@ namespace MonitorHost
     {
         private Timer _timer;
         private int _invokeCount = 0;
+        private readonly IConfiguration _configuration;
+        public LifetimeEventsHostedService(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            _timer = new Timer(CallEvery30Minutes, null, TimeSpan.FromSeconds(1), TimeSpan.FromMinutes(30));
+            string intervalstring = _configuration.GetSection("CallMonitorInMinutes").Value;
+            int intervalInMinutes = int.Parse(intervalstring);
+            _timer = new Timer(CallInMinutes, null, TimeSpan.FromSeconds(1), TimeSpan.FromMinutes(intervalInMinutes));
 
             return Task.CompletedTask;
             // throw new NotImplementedException();
@@ -26,9 +35,33 @@ namespace MonitorHost
             throw new NotImplementedException();
         }
 
-        private void CallEvery30Minutes(object state)
+        private void CallInMinutes(object state)
         {
+            string stockUrl = _configuration.GetSection("StockSite").Value;
+            string stockName = _configuration.GetSection("StockName").Value;
+            string stockValue = _configuration.GetSection("StockValue").Value;
+            string[] stockQuotes = _configuration.GetSection("StockQuotes").Get<string[]>();
+
+            HtmlWeb htmlWeb = new HtmlWeb();
+
+            foreach (string quote in stockQuotes)
+            {
+                string htmlLoad = string.Format(stockUrl, quote, quote); 
+
+                HtmlDocument htmlDocument = htmlWeb.Load(htmlLoad);
+
+                HtmlNodeCollection htmlNodes = htmlDocument.DocumentNode.SelectNodes(stockName);
+                string stockName2 = htmlNodes[0].InnerText;
+
+
+                htmlNodes = htmlDocument.DocumentNode.SelectNodes(stockValue);
+                string stockValue2 = htmlNodes[0].InnerText;
+                Console.WriteLine($"{stockName2} ${stockValue2}");
+
+            }
+
             _invokeCount++;
+
                 
             if (_invokeCount == 3)
             {

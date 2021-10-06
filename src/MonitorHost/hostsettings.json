@@ -1,3 +1,11 @@
 {
-  "environment": "Development"
+  "environment": "Development",
+  "CallMonitorInMinutes": 1,
+  "StockSite": "https://finance.yahoo.com/quote/{0}?p={1}&.tsrc=fin-srch",
+  "StockName": "/html/body/div[1]/div/div/div[1]/div/div[2]/div/div/div[5]/div/div/div/div[2]/div[1]/div[1]/h1",
+  "StockValue": "/html/body/div[1]/div/div/div[1]/div/div[2]/div/div/div[5]/div/div/div/div[3]/div[1]/div[1]/span[1]",
+  "StockQuotes": [ "SPCE", "V", "MRNA" ]
+
+
 }
+
