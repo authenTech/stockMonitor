@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Stock.Service.StockService;
 using System;
 using System.IO;
 
@@ -25,6 +26,7 @@ namespace MonitorHost
                 
                 .ConfigureServices((hostContext, services) =>
                 {
+                    services.AddSingleton<IStockMonitorService,StockMonitorService>();
                     services.AddHostedService<LifetimeEventsHostedService>();
                 });
         }

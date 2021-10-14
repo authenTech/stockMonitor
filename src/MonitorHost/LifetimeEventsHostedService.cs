@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Stock.Service.StockService;
 
 namespace MonitorHost
 {
@@ -15,9 +16,11 @@ namespace MonitorHost
         private Timer _timer;
         private int _invokeCount = 0;
         private readonly IConfiguration _configuration;
-        public LifetimeEventsHostedService(IConfiguration configuration)
+        private readonly IStockMonitorService _stockMonitorService;
+        public LifetimeEventsHostedService(IConfiguration configuration,IStockMonitorService stockMonitorService)
         {
             _configuration = configuration;
+            _stockMonitorService = stockMonitorService;
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
@@ -37,6 +40,7 @@ namespace MonitorHost
 
         private void CallInMinutes(object state)
         {
+            _stockMonitorService.Monitor();
             string stockUrl = _configuration.GetSection("StockSite").Value;
             string stockName = _configuration.GetSection("StockName").Value;
             string stockValue = _configuration.GetSection("StockValue").Value;
