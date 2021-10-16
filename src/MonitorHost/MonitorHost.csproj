@@ -3,6 +3,8 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net5.0</TargetFramework>
+    <AssemblyName>Monitor.Host.MonitorHost</AssemblyName>
+    <RootNamespace>Monitor.Host.MonitorHost</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

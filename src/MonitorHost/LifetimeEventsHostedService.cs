@@ -9,7 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Stock.Service.StockService;
 
-namespace MonitorHost
+namespace Monitor.Host.MonitorHost
 {
     public class LifetimeEventsHostedService : IHostedService
     {

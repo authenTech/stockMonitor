@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Monitor.Host.MonitorHost;
+
+
 
 namespace Stock.Service.StockService
 {
-    public class StockMonitorService : IStockMonitorService
+    public class StockMonitorService : LifetimeEventsHostedServices, IStockMonitorService
     {
         public void Monitor()
         {
