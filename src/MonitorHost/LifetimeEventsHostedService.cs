@@ -9,7 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Stock.Service.StockService;
 
-namespace Monitor.Host.MonitorHost
+namespace MonitorHost
 {
     public class LifetimeEventsHostedService : IHostedService
     {
@@ -41,28 +41,7 @@ namespace Monitor.Host.MonitorHost
         private void CallInMinutes(object state)
         {
             _stockMonitorService.Monitor();
-            string stockUrl = _configuration.GetSection("StockSite").Value;
-            string stockName = _configuration.GetSection("StockName").Value;
-            string stockValue = _configuration.GetSection("StockValue").Value;
-            string[] stockQuotes = _configuration.GetSection("StockQuotes").Get<string[]>();
-
-            HtmlWeb htmlWeb = new HtmlWeb();
-
-            foreach (string quote in stockQuotes)
-            {
-                string htmlLoad = string.Format(stockUrl, quote, quote); 
-
-                HtmlDocument htmlDocument = htmlWeb.Load(htmlLoad);
-
-                HtmlNodeCollection htmlNodes = htmlDocument.DocumentNode.SelectNodes(stockName);
-                string stockName2 = htmlNodes[0].InnerText;
-
-
-                htmlNodes = htmlDocument.DocumentNode.SelectNodes(stockValue);
-                string stockValue2 = htmlNodes[0].InnerText;
-                Console.WriteLine($"{stockName2} ${stockValue2}");
-
-            }
+           
 
             _invokeCount++;
 
